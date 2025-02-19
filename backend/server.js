@@ -6,10 +6,12 @@ const cors = require('cors');
 
 const questionRoutes = require('./routes/questionRoute');
 const quizRoutes = require('./routes/quizRoutes');
+const authRoute =  require("./routes/auth.route.js");
 
 const app = express();
 app.use(cors({
     origin: [`${process.env.FRONTEND_URL}`],
+    credentials: true 
 }))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json());
@@ -22,6 +24,7 @@ app.use((req, res, next) => {
 })
 app.use('/question', questionRoutes);
 app.use('/quiz', quizRoutes);
+app.use("/auth", authRoute);
 
 try{
     mongoose.connect(url)

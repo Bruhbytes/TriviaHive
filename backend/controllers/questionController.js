@@ -2,12 +2,14 @@ const {Question} = require('../models/questionModel');
 const Quiz = require('../models/quizModel');
 
 const postQuestion = async (req, res) => {
-    const {quizName, question, options, correct} = req.body;
+    const {quizName, question, options, correct, type, marks} = req.body;
     
     const newQuestion = new Question({        
         question,
         options,
-        correct
+        correct,
+        type,
+        marks
     });
 
     await newQuestion.save()
@@ -28,6 +30,26 @@ const postQuestion = async (req, res) => {
     });
 }
 
+//This controller made especially if you have an array of objects where each object is a question (check sampleQuestions.js file)
+//if you want to add lot of questions through one POSTMAN request, you use this 
+const postQuestions = async (req, res) => {
+    const data = req.body;
+
+    Quiz.findOne({name: "sampleQuiz"}) //change the name of the quiz
+    .then(async (quiz) => {
+        data.forEach(async obj => {
+            quiz.questions.push(obj);
+            await quiz.save();
+        });
+
+        res.status(200).json({msg: "Added questions"});
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error: err})
+    });
+}
+
 const getQuestion = async (req, res) => {
     try {
         const result = await Question.find({});    
@@ -37,4 +59,4 @@ const getQuestion = async (req, res) => {
     }
 }
 
-module.exports  = {postQuestion, getQuestion};
+module.exports  = {postQuestions, postQuestion, getQuestion};
