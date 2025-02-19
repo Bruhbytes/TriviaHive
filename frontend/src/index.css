@@ -1,0 +1,56 @@
+body,h1,h2 {
+  margin: 0; 
+}
+
+.nav-link{
+  margin: auto 1rem;
+}
+/* Home.jsx styles */
+.main{
+  background-image: url(../public/home-shapes-full.png);
+  background-repeat: no-repeat;
+  background-position:top;
+  background-size:120%;
+
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+}
+.mid-container{
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  gap: 10px;
+  width: 50vw;
+  height: 90vh;
+  justify-content: center;
+  align-items: center;
+}
+.tagline{
+  font-size: 2rem;
+
+}
+
+/* Instructions.jsx styles */
+.instruct{
+  padding: 1rem 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  transform: translate(-50%, -50%);
+
+  background-color: rgb(247, 242, 235);
+  border: 2px solid rgb(3, 153, 70);
+  border-radius: 20px;
+}
+
+/* Quiz.jsx styles */
+.quiz-body{
+  background-image: url(../public/home-shapes-full.png);
+  background-repeat: no-repeat;
+  background-position:center;
+  background-size:120%;
+  height: 100vh;
+  width: 100vw;
+}
