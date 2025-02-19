@@ -14,6 +14,16 @@ const basicattemptSchema = mongoose.Schema({
     }
 })
 
+const attemptEntrySchema = mongoose.Schema({
+    timestamp: {
+        type: Date,
+        default: Date.now 
+    },
+    answers: [basicattemptSchema] // List of question attempts
+});
+
+const AttemptEntry = new mongoose.model("AttemptEntry", attemptEntrySchema);
+
 const attemptSchema = mongoose.Schema({
     user:{
         type: String
@@ -23,9 +33,9 @@ const attemptSchema = mongoose.Schema({
         required:true
     },
     attempts:{
-        type:[basicattemptSchema]
+        type:[attemptEntrySchema]
     }
 })
 
 const Attempt = new mongoose.model("Attempt", attemptSchema);
-module.exports = {Attempt};
+module.exports = {Attempt, AttemptEntry};

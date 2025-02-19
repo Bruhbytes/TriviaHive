@@ -6,31 +6,102 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import FormLabel from '@mui/material/FormLabel';
 import AuthContext from '../Context/AuthContext';
-
+import axios from 'axios';
+import JSConfetti from 'js-confetti'
 import sample from '../sampleQuestions';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getTimeRemaining, getDeadTime, clearTimer, startTimer } from '../time';
+
+
+const jsConfetti = new JSConfetti()
 
 const Quiz = () => {
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [i, seti] = useState(0);
     const [question, setQuestion] = useState(sample[i]);
     const [mcqAnswer, setMcqAnswer] = useState("");
     const [numericAns, setNumericAns] = useState("");
+    const [attempt, setAttempt] = useState({ quizName: "sampleQuiz", user: user ? user.username : "", attempts: [] });
+    const [timer, setTimer] = useState("00:00");
+    const Ref = useRef(null);
 
-    const [attempt, setAttempt] = useState([]);
+    const navigate = useNavigate();
+
+    const onClickReset = () => {
+        clearTimer(getDeadTime(), setTimer, Ref, handleNext);
+    };
+
+    useEffect(() => {
+        clearTimer(getDeadTime(), setTimer, Ref, handleNext);
+    }, [])    
+
+    // To fetch the user upon initial mounting of the component
+    useEffect(() => {
+        if (user) {
+            setAttempt(prevAttempt => ({
+                ...prevAttempt,
+                user: user.username
+            }));
+        }
+    }, [user]);
+
+    const request = axios.create({
+        baseURL: `${process.env.REACT_APP_URL}`,
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" }
+    })
 
     const handleNext = () => {
-        if(i === sample.length - 1){
-            //submit logic
+        //Calculating the marks
+        let marks = 0;
+        if (question.type === "mcq") {
+            if (mcqAnswer && mcqAnswer === question.correct) marks = question.marks;
         }
-        else{
-            setQuestion(sample[i+1]);
-            //note the mcqAnswer
-            
+        else {
+            if (numericAns && numericAns == Number(question.correct)) marks = question.marks;
+        }
+        //Add to the attempt history as per username
+        const basicAttempt = {
+            question: question.question,
+            marksAwarded: marks,
+            attemptedAns: question.type === "mcq" ? mcqAnswer : numericAns
+        }
+        setAttempt(prevAttempt => {
+            const updatedAttempt = {
+                ...prevAttempt,
+                attempts: [...prevAttempt.attempts, basicAttempt]
+            }
+
+            //SUBMIT Logic
+            if (i === sample.length - 1) {
+                request.post("/attempt", updatedAttempt)
+                    .then(response => {
+                        console.log(response.data.message);
+                    })
+                    .catch(err => console.log(err));
+
+                jsConfetti.addConfetti({
+                    confettiRadius: 6,
+                    confettiNumber: 500,
+                })
+
+                const totalMarks = updatedAttempt.attempts.reduce((sum, q) => sum + q.marksAwarded, 0);
+                navigate("/score", {state: {totalMarks}});
+            }
+            return updatedAttempt;
+        })
+
+        //NEXT Logic
+        if (i !== sample.length - 1) {
+            setQuestion(sample[i + 1]);
             setMcqAnswer("");
             setNumericAns("");
             seti(i + 1);
         }
+
+        // Time resetting
+        onClickReset();
     }
 
     return (
@@ -42,7 +113,7 @@ const Quiz = () => {
                 <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
                     value={mcqAnswer}
-                    onChange={(e) => {setMcqAnswer(e.target.value)}}
+                    onChange={(e) => { setMcqAnswer(e.target.value) }}
                     name="radio-buttons-group"
                 >
                     <FormControlLabel value={question.options[0]} control={<Radio />} label={question.options[0]} />
@@ -51,13 +122,14 @@ const Quiz = () => {
                     <FormControlLabel value={question.options[3]} control={<Radio />} label={question.options[3]} />
                 </RadioGroup>
             </FormControl>)
-            :
-            (<FormControl>
-                <TextField id="standard-basic" label="Answer" variant="standard" type='Number' value={numericAns} onChange={(e) => setNumericAns(e.target.value)} />
-            </FormControl>)
+                :
+                (<FormControl>
+                    <TextField id="standard-basic" label="Answer" variant="standard" type='Number' value={numericAns} onChange={(e) => setNumericAns(e.target.value)} />
+                </FormControl>)
             }
             <p>Marks: {question.marks}</p>
-            <button onClick={handleNext}>{i === sample.length - 1 ? "Submit": "Next"}</button>
+            <h2>{timer}</h2>
+            <button onClick={handleNext}>{i === sample.length - 1 ? "Submit" : "Next"}</button>
         </div>
     )
 }
