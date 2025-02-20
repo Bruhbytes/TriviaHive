@@ -23,6 +23,7 @@ const Quiz = () => {
     const [mcqAnswer, setMcqAnswer] = useState("");
     const [numericAns, setNumericAns] = useState("");
     const [attempt, setAttempt] = useState({ quizName: "sampleQuiz", user: user ? user.username : "", attempts: [] });
+    
     const [timer, setTimer] = useState("00:00");
     const Ref = useRef(null);
 
@@ -35,6 +36,10 @@ const Quiz = () => {
     useEffect(() => {
         clearTimer(getDeadTime(), setTimer, Ref, handleNext);
     }, [])    
+
+    useEffect(() => {
+        setQuestion(sample[i]);
+    }, [i]);
 
     // To fetch the user upon initial mounting of the component
     useEffect(() => {
@@ -66,7 +71,10 @@ const Quiz = () => {
             question: question.question,
             marksAwarded: marks,
             attemptedAns: question.type === "mcq" ? mcqAnswer : numericAns
-        }
+        }        
+        console.log(basicAttempt);
+        
+        
         setAttempt(prevAttempt => {
             const updatedAttempt = {
                 ...prevAttempt,
@@ -89,17 +97,30 @@ const Quiz = () => {
                 const totalMarks = updatedAttempt.attempts.reduce((sum, q) => sum + q.marksAwarded, 0);
                 navigate("/score", {state: {totalMarks}});
             }
+            else{
+                setMcqAnswer("");
+                setNumericAns("");                
+                seti(prevI => {
+                    console.log("i incremented", prevI + 1);
+                    return prevI + 1;
+                });
+            }
             return updatedAttempt;
         })
 
         //NEXT Logic
-        if (i !== sample.length - 1) {
-            setQuestion(sample[i + 1]);
-            setMcqAnswer("");
-            setNumericAns("");
-            seti(i + 1);
-        }
-
+        // if (i !== sample.length - 1) {
+        //     // setQuestion(sample[i + 1]);
+        //     setMcqAnswer("");
+        //     setNumericAns("");
+        //     // seti(i + 1);
+        //     seti(prevI => {
+        //         console.log("i incremented", prevI + 1);
+        //         return prevI + 1;
+        //     });
+        //     // console.log("i incremented");
+        // }
+        console.log("Handle next button pressed");
         // Time resetting
         onClickReset();
     }

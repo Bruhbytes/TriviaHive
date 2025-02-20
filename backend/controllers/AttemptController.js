@@ -31,4 +31,16 @@ const postAttempt = async (req, res) => {
 
 }
 
-module.exports = {postAttempt};
+const getAttempts = async (req, res) => {
+    const username = req.params.user;
+
+    Attempt.find({user: username})
+    .then((attempts) => {
+        res.status(200).json({attempts: attempts});
+    })
+    .catch(err => {
+        res.status(500).json({"error": err});
+    })
+}
+
+module.exports = {postAttempt, getAttempts};

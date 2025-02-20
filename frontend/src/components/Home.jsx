@@ -84,7 +84,7 @@ const Home = () => {
                             </div>
                         </Fade>
                     </Modal>
-                    <button>View History</button>
+                    <button onClick={() => navigate("/history")}>View History</button>
                 </div>
             </div>
 

@@ -6,6 +6,8 @@ import Register from './components/Register';
 import Home from "./components/Home";
 import Quiz from "./components/Quiz";
 import Scoreboard from "./components/Scoreboard";
+import History from "./components/History";
+import Attempt from "./components/Attempt";
 import AuthContext from './Context/AuthContext';
 import { useContext } from "react";
 // import Create from "./components/Create";
@@ -28,6 +30,8 @@ function App() {
           <Route path="/register" element={<Register />} />         
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/score" element={<Scoreboard />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/attempt" element={<Attempt />} />
         </Routes>
       </BrowserRouter>
     </div>

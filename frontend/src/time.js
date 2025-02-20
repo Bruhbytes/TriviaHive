@@ -37,7 +37,7 @@ export const clearTimer = (e, setTimer, ref, handleNext) => {
     // If you adjust it you should also need to
     // adjust the Endtime formula we are about
     // to code next
-    setTimer("00:30");
+    setTimer("00:10");
 
     // If you try to remove this line the
     // updating of timer Variable will be
@@ -48,7 +48,15 @@ export const clearTimer = (e, setTimer, ref, handleNext) => {
 
         let { total, minutes, seconds } =
         getTimeRemaining(e);
-        if(minutes == 0 && seconds == 0){
+        // if(minutes == 0 && seconds == 0){
+        //     console.log("times up, handleNext");
+        //     clearInterval(ref.current);
+        //     handleNext();
+        // }
+        if (total <= 0) {  // Ensures `handleNext` is called only once
+            console.log("Times up, calling handleNext...");
+            clearInterval(id); 
+            if (ref.current) ref.current = null;  // Reset ref to avoid double calls
             handleNext();
         }
     }, 1000);
@@ -60,6 +68,6 @@ export const getDeadTime = () => {
 
     // This is where you need to adjust if
     // you entend to add more time
-    deadline.setSeconds(deadline.getSeconds() + 30);
+    deadline.setSeconds(deadline.getSeconds() + 10);
     return deadline;
 };
