@@ -27,7 +27,8 @@ const History = () => {
     const navigate = useNavigate();
 
     const request = axios.create({
-        baseURL: `${backendUrl}`,
+        baseURL: `https://triviahive-backend.onrender.com`,
+        // baseURL: `${backendUrl}`,
         withCredentials: true
     })
 

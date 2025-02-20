@@ -34,7 +34,8 @@ const Home = () => {
     const handleLogout = () => {
         localStorage.removeItem("currentUser");
 
-        axios.post(`${backendUrl}auth/logout`, {}, { withCredentials: true })
+        // axios.post(`${backendUrl}/auth/logout`, {}, { withCredentials: true })
+        axios.post(`https://triviahive-backend.onrender.com/auth/logout`, {}, { withCredentials: true })
             .then((response) => console.log(response.data))
             .catch(err => console.log(err));
 

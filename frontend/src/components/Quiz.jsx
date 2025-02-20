@@ -13,7 +13,7 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getTimeRemaining, getDeadTime, clearTimer, startTimer } from '../time';
 
-
+const backendUrl = process.env.REACT_APP_URL;
 const jsConfetti = new JSConfetti()
 
 const Quiz = () => {
@@ -52,7 +52,8 @@ const Quiz = () => {
     }, [user]);
 
     const request = axios.create({
-        baseURL: `${process.env.REACT_APP_URL}`,
+        // baseURL: `${backendUrl}`,
+        baseURL: `https://triviahive-backend.onrender.com`,
         withCredentials: true,
         headers: { "Content-Type": "application/json" }
     })

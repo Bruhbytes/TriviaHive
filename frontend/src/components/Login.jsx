@@ -13,7 +13,8 @@ function Login() {
   const navigate = useNavigate();
 
   const newRequest = axios.create({
-    baseURL: `${baseURL}`,
+    // baseURL: `${baseURL}`,
+    baseURL: `https://triviahive-backend.onrender.com`,
     withCredentials: true,
   });
 

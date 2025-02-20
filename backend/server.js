@@ -10,8 +10,19 @@ const authRoute =  require("./routes/auth.route.js");
 const attemptRoute = require("./routes/attemptRoute.js");
 
 const app = express();
+
+const allowedOrigins = [
+    "https://astounding-stardust-52dc77.netlify.app",    
+    "http://localhost:3000" // For local development
+];
 app.use(cors({
-    origin: [`${process.env.FRONTEND_URL}`],
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true 
 }))
 app.use(bodyParser.urlencoded({extended: true}))

@@ -14,7 +14,8 @@ function Register() {
 
   const navigate = useNavigate();
   const newRequest = axios.create({
-    baseURL: `${baseURL}`,
+    // baseURL: `${baseURL}`,
+    baseURL: `https://triviahive-backend.onrender.com`,
     withCredentials: true,
   });
   const handleSubmit = async (e) => {

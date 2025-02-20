@@ -25,7 +25,8 @@ const Create = () => {
             correct
         }        
        
-        axios.post(`${backendUrl}/question`, JSON.stringify(data),
+        // axios.post(`${backendUrl}/question`, JSON.stringify(data),
+        axios.post(`https://triviahive-backend.onrender.com/question`, JSON.stringify(data),
          {headers:{"Content-Type" : "application/json"}})
         .then(response => {
             if (response.status === 200) {
