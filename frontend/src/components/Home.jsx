@@ -8,6 +8,7 @@ import AuthContext from '../Context/AuthContext.jsx';
 import Avatar from "./Avatar/index";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../css/PlayQuiz.css"
 
 const backendUrl = process.env.REACT_APP_URL;
 
@@ -44,30 +45,26 @@ const Home = () => {
 
     return (
         <div className="main">
-            <div>
+            <div className="topContainer">
                 <h2 className="heading">TriviaHive</h2>
-                <div style={{
-                    display: "inline-flex",
-                    gap: "16px",
-                    alignItems: "center"
-                }}>
+                <div>
                     {user ? (
-                        <Button color="white" style={{ backgroundColor: "#BF2EF0", height: "80%" }} onClick={handleLogout}>
+                        <button className="bn3637 bn37" onClick={handleLogout}>
                             {status}
-                        </Button>
+                        </button>
                     ) : (
-                        <Button color="white" style={{ backgroundColor: "#BF2EF0" }} onClick={handleSignIn}>
+                        <button className="bn3637 bn37" onClick={handleSignIn}>
                             {status}
-                        </Button>
+                        </button>
                     )}
                     {user && <Avatar />}
                 </div>
             </div>
             <div className="mid-container">
-                <p className="tagline">Quiz.<br></br>Learn.<br></br>Conquer.</p>
-                <p>An interactive quiz platform designed to challenge your knowledge, sharpen your skills, and make learning fun. Compete, learn, and grow with engaging quizzes across various topics!</p>
+                <p className="tagline">Discover the <br></br>Genius Within!</p>
+                <p className="smallTagline">An interactive quiz platform designed to challenge your knowledge, sharpen your skills, and make learning fun. Compete, learn, and grow with engaging quizzes across various topics!</p>
                 <div>
-                    <Button onClick={handleOpen}>Play a sample quiz</Button>
+                    <button onClick={handleOpen} className="learn-more">Play</button>
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -85,7 +82,7 @@ const Home = () => {
                             </div>
                         </Fade>
                     </Modal>
-                    <button onClick={() => navigate("/history")}>View History</button>
+                    <button onClick={() => navigate("/history")} className="bn3637 bn37">View History</button>
                 </div>
             </div>
 

@@ -28,9 +28,9 @@ function App() {
           <Route exact path="/" element={<Home />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />         
-          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz" element={user ? <Quiz /> : <Login /> } />
           <Route path="/score" element={<Scoreboard />} />
-          <Route path="/history" element={<History />} />
+          <Route path="/history" element={user ? <History /> : <Login /> } />
           <Route path="/attempt" element={<Attempt />} />
         </Routes>
       </BrowserRouter>

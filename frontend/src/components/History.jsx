@@ -17,7 +17,10 @@ const backendUrl = process.env.REACT_APP_URL;
 const History = () => {
     const { user, setUser } = useContext(AuthContext);
     const [jsonData, setJsonData] = useState();
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
+    const [empty, setEmpty] = useState(false);
+    const [loading, setLoading] = useState(true);
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -35,30 +38,33 @@ const History = () => {
     useEffect(() => {
         request.get(`/attempt/${user.username}`)
             .then((response) => {
-                console.log(response.data.attempts);
+                // console.log(response.data.attempts);
                 setJsonData(response.data.attempts); //array
+                console.log(jsonData);
+                if(response.data.attempts.length == 0) setEmpty(true);
+                setLoading(false);
             })
             .catch(err => console.log(err));
+
     }, [user]);
 
     return (
-        <div>
-            <h2>Your Previous attempts</h2>
+        <div style={{textAlign:"center", width:"80vw", margin:"auto"}}>
+            <h2 className="basicH2">Your Previous attempts</h2>
 
-            {jsonData ? jsonData.map((element, index) => {
+            {jsonData && jsonData.map((element, index) => {
 
                 return (
                     <div key={index}>
-                        <Accordion>
+                        <Accordion style={{backgroundColor:"#caeffd", margin:"1rem"}}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1-content"
                                 id="panel1-header"
                             >
-                                <Typography component="span">{element.quizName}</Typography>
+                                <h2 style={{fontFamily:"Balsamiq Sans", fontSize:"1.5rem"}}>{element.quizName}</h2>
                             </AccordionSummary>
-                            <AccordionDetails>
-                                {/* <p>blah</p> */}
+                            <AccordionDetails>                                
                                 {element.attempts.map((attempt, ind) => {
                                     const formattedDate = new Date(attempt.timestamp).toLocaleString("en-US", {
                                         year: "numeric",
@@ -70,27 +76,30 @@ const History = () => {
                                         hour12: true, // Converts to 12-hour format
                                     });
                                     const answers = attempt.answers;
-                                    return(                                                                        
-                                    <div onClick={() => {navigate("/attempt", {state:{answers}})}}>
-                                        <p>Attempt {ind + 1}</p>
-                                        <p>{formattedDate}</p>
-                                    </div>
-                                )})}
+                                    return (
+                                        <div onClick={() => { navigate("/attempt", { state: { answers } }) }} className="attempt">
+                                            <p>Attempt {ind + 1}</p>
+                                            <p>{formattedDate}</p>
+                                        </div>
+                                    )
+                                })}
 
                             </AccordionDetails>
                         </Accordion>
                     </div>
                 );
-            })
-                :
-                <Backdrop
+            })}
+            {loading &&
+                (<Backdrop
                     sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
                     open={open}
                     onClick={handleClose}
                 >
                     <CircularProgress color="inherit" />
-                </Backdrop>
+                </Backdrop>)
             }
+            {empty && (<h3>There are no Attempts</h3>)}
+            <button onClick={() => navigate("/")} className="bn3637 bn37">Go Home</button>
         </div>
     )
 }

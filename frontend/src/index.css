@@ -22,13 +22,74 @@ body,h1,h2 {
   flex-direction: column;
   gap: 10px;
   width: 50vw;
-  height: 90vh;
+  height: 60vh;
   justify-content: center;
   align-items: center;
 }
 .tagline{
-  font-size: 2rem;
+  font-size: 3.5rem;
+  font-family: "Caudex", serif;  
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.smallTagline{
+  font-family: "Balsamiq Sans", serif;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: grey;
+}
 
+.heading{
+  display: inline-block;
+  margin: 1rem auto;
+  font-family: "Trade Winds", serif;
+  font-weight: 400;
+  font-size: 45px;
+  color: rgb(64, 4, 104);
+}
+
+.topContainer{
+  width: 100vw;
+  position: relative;
+}
+.topContainer > div{
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 200px;
+
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bn3637 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 1rem;
+  /* font-family: "Poppins", sans-serif; */
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  backface-visibility: hidden;
+  border: 0.3rem solid transparent;
+  border-radius: 3rem;
+  cursor: pointer;
+}
+
+.bn37 {
+  border-color: transparent;
+  color: #fff;
+  background-color: #000;
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+}
+  
+.bn37:hover {
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0) !important;
 }
 
 /* Instructions.jsx styles */
@@ -49,8 +110,64 @@ body,h1,h2 {
 .quiz-body{
   background-image: url(../public/home-shapes-full.png);
   background-repeat: no-repeat;
-  background-position:center;
+  background-position:bottom ;
   background-size:120%;
   height: 100vh;
   width: 100vw;
+}
+.realQuizbody{
+  width: 70vw;
+  margin: auto;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+}
+.question h2{
+  display: inline-block;  
+  font-family: "Caudex", serif;    
+}
+.question > div{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  text-align: right;
+}
+.question > div > p{
+  font-size: 4rem;
+  margin: 0 auto;
+  font-family: "Gowun Batang", serif;
+}
+.next-questionbtn{
+  background: #fbca1f;
+  font-family: inherit;
+  padding: 0.6em 1.3em;
+  font-weight: 900;
+  font-size: 18px;
+  border: 3px solid black;
+  border-radius: 0.4em;
+  box-shadow: 0.1em 0.1em;
+  cursor: pointer;
+}
+.next-questionbtn:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+/* History.jsx styles*/
+.basicH2{
+  font-family: "Caudex", serif;      
+  font-size: 2rem;
+}
+
+.attempt{
+  background-color: #51fd9f;
+  border-radius: 20px;
+  border: 2px solid black;
+  margin: 10px;
+  cursor: pointer;
+}
+.attempt p{
+  margin: 0 auto 5px;
+  font-family: "Trade Winds", serif;
 }
